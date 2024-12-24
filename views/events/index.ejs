@@ -1,0 +1,44 @@
+<h1>Events</h1>
+
+<% if (user) { %>
+    <p>Logged in as: <%= user.username %> <a href="/logout">Logout</a></p>
+
+    <h2>Create New Event</h2>
+    <% if (locals.error) { %>
+        <p class="error"><%= error %></p>
+    <% } %>
+    <% if (locals.success) { %>
+        <p class="success"><%= success %></p>
+    <% } %>
+    <form method="POST" action="/events">
+        <label for="title">Title:</label>
+        <input type="text" id="title" name="title" placeholder="Title" required><br>
+        <label for="description">Description:</label>
+        <textarea id="description" name="description" placeholder="Description"></textarea><br>
+        <label for="date">Date:</label>
+        <input type="datetime-local" id="date" name="date" required><br>
+        <label for="location">Location:</label>
+        <input type="text" id="location" name="location" placeholder="Location"><br>
+        <label for="capacity">Capacity:</label>
+        <input type="number" id="capacity" name="capacity" placeholder="Capacity"><br>
+        <button type="submit">Create Event</button>
+    </form>
+
+    <h2>Upcoming Events</h2>
+    <% if (events && events.length > 0) { %>
+        <ul>
+            <% events.forEach(event => { %>
+                <li>
+                    <h3><%= event.title %></h3>
+                    <p><%= event.description %></p>
+                    <p>Date: <%= new Date(event.date).toLocaleString() %></p> <p>Location: <%= event.location %></p>
+                    <p>Capacity: <%= event.capacity %></p>
+                </li>
+            <% }); %>
+        </ul>
+    <% } else { %>
+        <p>No events found.</p>
+    <% } %>
+<% } else { %>
+    <p>Please <a href="/login">login</a> to view and create events.</p>
+<% } %>
